@@ -16,7 +16,7 @@ export default {
 <template>
   <div>
     <div class="details">
-      <ItemList countrySelected="null" :country="country" />
+      <ItemList class="complete" :isSelected="false" :country="country" />
     </div>
   </div>
 </template>
@@ -24,11 +24,7 @@ export default {
 <style scoped lang="scss">
 .details {
   background-color: white;
-  padding: .5rem;
+  padding: 1rem;
   border-radius: .5rem;
-
-  & > img {
-    border-radius: .5rem;
-  }
 }
 </style>

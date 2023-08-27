@@ -3,16 +3,18 @@ export default {
   name: 'ItemList',
   props: {
     country: { type: Object, required: true },
-    countrySelected: { type: String, required: true }
+    isSelected: { type: Boolean, required: true }
   }
 }
 </script>
 
 <template>
-  <li>
-    <img class="image-country w-full" src="https://getgoldenvisa.com/wp-content/uploads/2022/02/start-a-business-in-the-uk.jpg" alt="">
+  <li @click="$emit('select', country)">
+    <div class="image-country w-full">
+      <img class="w-full" src="https://getgoldenvisa.com/wp-content/uploads/2022/02/start-a-business-in-the-uk.jpg" alt="">
+    </div>
 
-    <div class="flex flex-wrap" :class="{ 'country-selected': countrySelected === country.code }">
+    <div class="flex flex-wrap" :class="{ 'country-selected': isSelected }">
       <div class="flag">
         <img class="" :src="'https://flagsapi.com/' + country.code + '/flat/64.png'" alt="">
       </div>
@@ -33,8 +35,24 @@ li {
   overflow: hidden;
   width: 31%;
 
+  &.complete {
+    border-radius: 0;
+    width: 100%;
+    list-style: none;
+    margin: 0;
+
+    .image-country {
+      height: auto;
+
+      img {
+        border-radius: 10px;
+      }
+    }
+  }
+
   .image-country {
     height: 7rem;
+    overflow: hidden;
   }
 
   .country-selected {

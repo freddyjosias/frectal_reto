@@ -14,7 +14,7 @@ export default {
     return {
       countries: [],
       continents: [],
-      countrySelected: { code: 'null' }
+      countrySelected: null
     }
   },
   mounted () {
@@ -62,14 +62,14 @@ export default {
       <SearchCountries />
     </div>
 
-    <div class="main" :class="{ 'there-selected': countrySelected.code !== 'null' }">
+    <div class="main" :class="{ 'there-selected': countrySelected !== null }">
       <ul class="flex flex-wrap justify-between">
         <template v-for="country in countries">
-          <ItemList :key="country.code" :countrySelected="countrySelected.code" :country="country" @click="get()" />
+          <ItemList :key="country.code" :isSelected="countrySelected !== null && country.code === countrySelected.code" :country="country" @select="e => countrySelected = e" />
         </template>
       </ul>
 
-      <CountryInformation v-if="countrySelected.code !== 'null'" :country="countrySelected" />
+      <CountryInformation v-if="countrySelected !== null" :country="countrySelected" />
     </div>
   </div>
 </template>
