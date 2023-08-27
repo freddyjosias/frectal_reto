@@ -9,14 +9,19 @@ export default {
 </script>
 
 <template>
-  <div class="container bg-gray-200">
+  <div class="container max-w-full flex flex-wrap h-screen">
     <NavigationSidebar />
-    <router-view/>
+
+    <main>
+      <router-view />
+    </main>
   </div>
 </template>
 
 <style scoped lang="scss">
-.container {
-
+main {
+  width: calc(100% - 15rem);
+  background-color: #f0f0fb;
+  padding: 1rem 3rem;
 }
 </style>
