@@ -11,7 +11,7 @@ export default {
 <template>
   <li @click="$emit('select', country)">
     <div class="image-country w-full">
-      <img class="w-full" src="https://getgoldenvisa.com/wp-content/uploads/2022/02/start-a-business-in-the-uk.jpg" alt="">
+      <img class="w-full" :src="'http://127.0.0.1:8001/api/country/images/' + country.code" alt="">
     </div>
 
     <div class="flex flex-wrap" :class="{ 'country-selected': isSelected }">
@@ -30,10 +30,8 @@ export default {
 <style scoped lang="scss">
 li {
   background-color: white;
-  border-radius: 15px;
-  margin: 1rem 0;
+  border-radius: 8px;
   overflow: hidden;
-  width: 31%;
 
   &.complete {
     border-radius: 0;
@@ -43,16 +41,21 @@ li {
 
     .image-country {
       height: auto;
+      max-height: 15rem;
 
       img {
-        border-radius: 10px;
+        border-radius: 4px;
       }
     }
   }
 
   .image-country {
-    height: 7rem;
+    height: 10rem;
     overflow: hidden;
+
+    img {
+      min-height: 100%;
+    }
   }
 
   .country-selected {
@@ -60,17 +63,17 @@ li {
   }
 
   .flag {
-    width: 25%;
+    width: 5rem;
     display: grid;
     place-items: center;
 
     img {
-      width: 60%;
+      width: 3.3rem;
     }
   }
 
   .fast-information {
-    width: 75%;
+    width: calc(100% - 5rem);
     line-height: 1.2rem;
     padding: .5rem 1rem .5rem 0;
   }

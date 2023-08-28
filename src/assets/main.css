@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #EAF1F3;
+    width: 100%;
+    color: #2b2b41;
+}
+
+@media (min-width: 1920px) {
+    body > div {
+        border-right: 1px solid #1A2942;
+    }
+}
+
+body > div {
+    max-width: 1920px !important;
+    height: 100% !important;
+    border-right: 1px solid white;
+    margin: auto;
+}

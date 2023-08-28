@@ -14,7 +14,9 @@ export default {
     return {
       countries: [],
       continents: [],
-      countrySelected: null
+      countrySelected: null,
+      filteredCountries: [],
+      formSearch: { input: '', continent: null }
     }
   },
   mounted () {
@@ -24,18 +26,15 @@ export default {
           code
           name
           continent {
+            code
             name
           }
-        }
-        continents {
-          code
-          name
         }
       }
     `).then(res => {
       this.countries = res.data.countries
+      this.filteredCountries = this.countries
       this.continents = res.data.continents
-      console.log(res.data)
     })
   },
   methods: {
@@ -49,8 +48,21 @@ export default {
         })
       }).then(res => res.json())
     },
-    get () {
-      console.log('secuencia')
+    updateSearch (newValue) {
+      this.countrySelected = null
+
+      if (newValue.input !== this.formSearch.input || newValue.continent !== this.formSearch.continent) {
+        this.filteredCountries = this.countries.filter(value => {
+          const result = value.name.toLowerCase().includes(newValue.input.toLowerCase())
+
+          if (result === false || newValue.continent === null) {
+            return result
+          }
+
+          return newValue.continent === value.continent.code
+        })
+        this.formSearch = newValue
+      }
     }
   }
 }
@@ -59,38 +71,110 @@ export default {
 <template>
   <div>
     <div class="search">
-      <SearchCountries />
+      <SearchCountries @submit-form="updateSearch" />
     </div>
 
     <div class="main" :class="{ 'there-selected': countrySelected !== null }">
-      <ul class="flex flex-wrap justify-between">
-        <template v-for="country in countries">
-          <ItemList :key="country.code" :isSelected="countrySelected !== null && country.code === countrySelected.code" :country="country" @select="e => countrySelected = e" />
-        </template>
-      </ul>
+      <div class="ul-container">
+        <ul class="flex flex-wrap justify-between">
+          <template v-for="country in filteredCountries">
+            <ItemList :key="country.code" :isSelected="countrySelected !== null && country.code === countrySelected.code" :country="country" @select="e => countrySelected = e" />
+          </template>
+        </ul>
+      </div>
 
-      <CountryInformation v-if="countrySelected !== null" :country="countrySelected" />
+      <CountryInformation class="info" v-if="countrySelected !== null" :country="countrySelected" @close="countrySelected = null" />
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-.main {
-  &.there-selected {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+.search {
+  background-color: #FFFFFF;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
 
-    &>div {
-      width: 26%;
+.main {
+  margin-top: 1rem;
+  padding: 1rem 3rem;
+
+  &.there-selected {
+    display: grid;
+    grid-template-columns: 7fr 3fr;
+    gap: 2rem;
+
+    .ul-container ul {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  ul {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 1630px) {
+  .main {
+    padding: 1rem 2rem 2rem 2rem;
+  }
+}
+
+@media (max-width: 1600px) {
+  .main {
+    &.there-selected {
+      grid-template-columns: 2fr 1fr;
+
+      .ul-container ul {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
 
     ul {
-      width: 70%;
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}
 
-      li {
-        width: 45%;
+@media (max-width: 1300px) {
+  .main {
+    padding: 1rem 4rem 3rem 4rem;
+
+    &.there-selected {
+      grid-template-columns: 1fr 1fr;
+
+      .ul-container ul {
+        grid-template-columns: repeat(1, 1fr);
       }
+    }
+
+    ul {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+@media (max-width: 1150px) {
+  .main {
+    padding: 1rem 2rem 2rem 2rem;
+  }
+}
+
+@media (max-width: 1040px) {
+  .main {
+    &.there-selected {
+      grid-template-columns: 1fr;
+
+      .ul-container ul {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    ul {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 }
