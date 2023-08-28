@@ -11,7 +11,7 @@ export default {
 <template>
   <li @click="$emit('select', country)">
     <div class="image-country w-full">
-      <img class="w-full" :src="'http://127.0.0.1:8001/api/country/images/' + country.code" alt="">
+      <img class="w-full" :src="'https://countries-app-24.000webhostapp.com/api.php?country=' + country.code" alt="">
     </div>
 
     <div class="flex flex-wrap" :class="{ 'country-selected': isSelected }">
